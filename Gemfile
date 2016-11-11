@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "http"
 gem "rails", "5.0"
 gem "mysql2"
 gem "sass-rails", "~> 5.0"
