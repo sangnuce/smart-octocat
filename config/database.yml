@@ -15,5 +15,6 @@ test:
   database: smart_octocat_faq_test
 
 production:
-  <<: *default
-  database: smart_octocat__production
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
