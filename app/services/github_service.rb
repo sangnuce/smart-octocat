@@ -15,10 +15,6 @@ class GithubService
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name} has reviewed on your pull request."
     when "pull_request"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
-      room = Room.find_by project_github_link: ...
-
-      reviewers = User.joins(:user_rooms).where "room_id = ? AND (user_rooms.role = ?
-        OR user_rooms.role = ?", room.id, 0, 1
     end
   end
 
