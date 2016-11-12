@@ -8,13 +8,13 @@ class GithubService
   end
 
   def get_message_to_send
-    byebug
+    # byebug
     case @action
     when "pull_request_review"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
-      body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name}
-        has reviewed on your pull request."
+      body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name} " +
+        "has reviewed on your pull request.\n" + @pull_request["html_url"]
     when "pull_request"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
       room = Room.find_by project_github_link: @params["repository"]["html_url"]
