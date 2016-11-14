@@ -15,7 +15,7 @@ class GithubService
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name} " +
-        "has reviewed on your pull request.\n" + @request["html_url"]
+        "has (commented) on your pull request.\n" + @request["html_url"]
     when "pull_request"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
 
@@ -40,7 +40,7 @@ class GithubService
       pusher = get_user_by_github_id @params["pusher"]["name"]
       sender = get_user_by_github_id @params["sender"]["login"]
 
-      body = "[To:#{sender.chatwork_id}]#{sender.name}\n#{pusher.name} has merged your pull request.\n" +
+      body = "[To:#{sender.chatwork_id}]#{sender.name}\n#{pusher.name} has (merged) your pull request.\n" +
         @params["repository"]["html_url"]
     end
 
