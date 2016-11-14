@@ -8,21 +8,21 @@ class GithubService
   end
 
   def get_message_to_send
-    # byebug
+    @room = Room.find_by project_github_link: @params["repository"]["html_url"]
+
     case @action
     when "pull_request_review"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name} " +
-        "has reviewed on your pull request.\n" + @pull_request["html_url"]
+        "has reviewed on your pull request.\n" + @request["html_url"]
     when "pull_request"
       pull_owner = get_user_by_github_id @pull_request["user"]["login"]
-      room = Room.find_by project_github_link: @params["repository"]["html_url"]
-      
-      if room
+
+      if @room
         if @pull_request["state"] == "open"
           reviewers = User.joins(:user_rooms).where "room_id = ? AND (user_rooms.role = ?
-            OR user_rooms.role = ?)", room.id, 0, 1
+            OR user_rooms.role = ?)", @room.id, 0, 1
           to_part = reviewers.map {|reviewer| "[To:#{reviewer.chatwork_id}]"}
           to_part = to_part.join + "\n"
 
@@ -44,7 +44,11 @@ class GithubService
         @params["repository"]["html_url"]
     end
 
-    body
+    [body, @room]
+  end
+
+  def get_room
+    @room
   end
 
   def get_user_by_github_id github_id
