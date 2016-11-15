@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111163754) do
+ActiveRecord::Schema.define(version: 20161115040418) do
+
+  create_table "pull_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "url"
+    t.text     "description",        limit: 65535
+    t.integer  "user_room_id"
+    t.string   "state"
+    t.boolean  "merged"
+    t.integer  "merged_by_id"
+    t.integer  "reviewer_num"
+    t.integer  "happy_reviewer_num"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["user_room_id"], name: "index_pull_requests_on_user_room_id", using: :btree
+  end
 
   create_table "rooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "chatwork_id"
@@ -38,6 +52,7 @@ ActiveRecord::Schema.define(version: 20161111163754) do
     t.datetime "updated_at",  null: false
   end
 
+  add_foreign_key "pull_requests", "user_rooms"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"
 end
