@@ -32,18 +32,18 @@ class GithubService
             @pull_request["html_url"]
         elsif @pull_request["state"] == "closed"
           sender = get_user_by_github_id @params["sender"]["login"]
-          body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
+
+          if @pull_request["merged"]
+            body = "[To:#{pull_owner.chatwork_id}]#{sender.name}\n#{sender.name} has (merged) your pull request.\n" +
+              @params["repository"]["html_url"]
+          else
+            body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
             "#{sender.name} has closed your pull request.\n" + @pull_request["html_url"]
+          end
         end
       else
         body = ""
       end
-    when "push"
-      pusher = get_user_by_github_id @params["pusher"]["name"]
-      sender = get_user_by_github_id @params["sender"]["login"]
-
-      body = "[To:#{sender.chatwork_id}]#{sender.name}\n#{pusher.name} has (merged) your pull request.\n" +
-        @params["repository"]["html_url"]
     end
 
     [body, @room]
