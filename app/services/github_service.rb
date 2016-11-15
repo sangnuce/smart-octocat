@@ -23,25 +23,27 @@ class GithubService
         if @pull_request["state"] == "open"
           reviewers = User.joins(:user_rooms).where "room_id = ? AND (user_rooms.role = ?
             OR user_rooms.role = ?)", @room.id, 0, 1
-          to_part = reviewers.map {|reviewer| "[To:#{reviewer.chatwork_id}]"}
+          to_part = reviewers.map do |reviewer|
+            reviewer.id == pull_owner.id ? "" : "[To:#{reviewer.chatwork_id}]"
+          end
           to_part = to_part.join + "\n"
 
           body = to_part + "#{pull_owner.name} has a pull request, please review it.\n" +
             @pull_request["html_url"]
         elsif @pull_request["state"] == "closed"
           sender = get_user_by_github_id @params["sender"]["login"]
-          body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
+
+          if @pull_request["merged"]
+            body = "[To:#{pull_owner.chatwork_id}]#{sender.name}\n#{sender.name} has (merged) your pull request.\n" +
+              @params["repository"]["html_url"]
+          else
+            body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
             "#{sender.name} has closed your pull request.\n" + @pull_request["html_url"]
+          end
         end
       else
         body = ""
       end
-    when "push"
-      pusher = get_user_by_github_id @params["pusher"]["name"]
-      sender = get_user_by_github_id @params["sender"]["login"]
-
-      body = "[To:#{sender.chatwork_id}]#{sender.name}\n#{pusher.name} has (merged) your pull request.\n" +
-        @params["repository"]["html_url"]
     end
 
     [body, @room]
