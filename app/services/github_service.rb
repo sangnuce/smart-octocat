@@ -42,7 +42,7 @@ class GithubService
       elsif @pull_request.state == "closed"
         if @pull_request.merged
           @pull_request.update merged_by: sender
-          body = "[To:#{pull_owner.chatwork_id}]#{sender.name}\n[piconname:#{sender.chatwork_id}] has " +
+          body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n[piconname:#{sender.chatwork_id}] has " +
             "(merged) your pull request.\n" + @params["repository"]["html_url"]
         else
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
