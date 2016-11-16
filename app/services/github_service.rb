@@ -11,17 +11,19 @@ class GithubService
 
     body = ""
     case @action
+    # Handle when review in a pull request
     when "pull_request_review"
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
-      body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n#{action_owner.name} " +
+      body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n[piconname:#{action_owner.chatwork_id}] " +
         "has (commented) on your pull request.\n" + @request["html_url"]
+    # Handle when close, open or merge pull request
     when "pull_request"
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
       sender = get_user_by_github_id @params["sender"]["login"]
 
       @pull_request = PullRequest.find_or_create_by(url: @params["pull_request"]["html_url"])
-        
+
       reviewers = User.joins(:user_rooms).where "room_id = ? AND user_rooms.role = ?",
         @room.id, 0
       user_room = UserRoom.find_by user: pull_owner, room: @room
@@ -35,18 +37,19 @@ class GithubService
         end
         to_part = to_part.join + "\n"
 
-        body = to_part + "#{pull_owner.name} has a pull request, please review it.\n" +
-          @pull_request.url
+        body = to_part + "[piconname:#{pull_owner.chatwork_id}] has a pull request, please review it.\n" +
+          @params["pull_request"]["title"] + "\n" + @pull_request.url
       elsif @pull_request.state == "closed"
         if @pull_request.merged
           @pull_request.update merged_by: sender
-          body = "[To:#{pull_owner.chatwork_id}]#{sender.name}\n#{sender.name} has (merged) your pull request.\n" +
-            @params["repository"]["html_url"]
+          body = "[To:#{pull_owner.chatwork_id}]#{sender.name}\n[piconname:#{sender.chatwork_id}] has " +
+            "(merged) your pull request.\n" + @params["repository"]["html_url"]
         else
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
-          "#{sender.name} has closed your pull request.\n" + @pull_request.url
+          "[piconname:#{sender.chatwork_id}] has closed your pull request.\n" + @pull_request.url
         end
       end
+    # Handle when user comment on outer pull request
     when "issue_comment"
       @pull_request = PullRequest.find_by url: @params["issue"]["html_url"]
       current_ok = @pull_request.happy_reviewer_num || 0
