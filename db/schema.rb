@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115040418) do
+ActiveRecord::Schema.define(version: 20161117055814) do
 
   create_table "pull_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "url"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20161115040418) do
     t.integer  "happy_reviewer_num"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.string   "title"
+    t.boolean  "deployed"
     t.index ["user_room_id"], name: "index_pull_requests_on_user_room_id", using: :btree
   end
 
