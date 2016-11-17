@@ -8,11 +8,11 @@ class DeployhooksController < ApplicationController
     not_deployed_pulls = PullRequest.not_deployed
 
     message = ""
-    not_deployed_pulls.each do |pull|
+    not_deployed_pulls.each_with_index do |pull, index|
       title = pull.title || ""
       description = pull.description || ""
       pull.update deployed: true
-      message += "# " + title + "\n"
+      message += "#{index + 1}. " + title + "\n"
       message += description + "\n"
     end
     body = to_part + "All pull requests are deployed.(please)\n" + message
