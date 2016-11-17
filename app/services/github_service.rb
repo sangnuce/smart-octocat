@@ -31,7 +31,7 @@ class GithubService
       @pull_request.update merged: @params["pull_request"]["merged"],
         state: @params["pull_request"]["state"], user_room: user_room,
         reviewer_num: reviewers.select{|reviewer| reviewer.id != pull_owner.id}.size,
-        title: @params["pull_request"]["title"], description: @params["pull_request"]["description"]
+        title: @params["pull_request"]["title"], description: @params["pull_request"]["body"]
 
       if @pull_request.state == "open"
         to_part = reviewers.map do |reviewer|
