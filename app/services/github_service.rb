@@ -11,6 +11,7 @@ class GithubService
 
     body = ""
     case @action
+
     # Handle when review in a pull request
     when "pull_request_review"
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
