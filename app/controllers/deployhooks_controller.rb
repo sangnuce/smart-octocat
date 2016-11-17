@@ -17,7 +17,6 @@ class DeployhooksController < ApplicationController
     end
     body = to_part + "All pull requests are deployed.(please)\n" + message
 
-    # byebug
     if message.present?
       http_request = HTTP.headers("X-ChatWorkToken" => ENV["chatwork_secret"])
         .post("https://api.chatwork.com/v1/rooms/#{room.chatwork_id}/messages", params: {body: body})
