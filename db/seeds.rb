@@ -3,7 +3,7 @@ hieu = User.create! name: "Bui Minh Hieu", github_id: "hieubm", chatwork_id: "12
 binh = User.create! name: "Truong Loc Binh", github_id: "truonglocbinh", chatwork_id: "1567566"
 son = User.create! name: "Nguyen Thai Son", github_id: "nguyenthaison", chatwork_id: "1567616"
 mr_thanh = User.create! name: "Ta Minh Thanh", github_id: "thanhtm", chatwork_id: "1458078"
-chi_hang = User.create! name: "Tran Minh Hang", chatwork_id: "1565457"
+chi_hang = User.create! name: "Tran Minh Hang", chatwork_id: "1474267"
 
 test_octocat = Room.create! name: "Smart Octocat", chatwork_id: "60833608",
   project_github_link: "https://github.com/NeverSmileK57CLC/smart-octocat"
