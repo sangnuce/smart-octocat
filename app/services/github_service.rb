@@ -17,7 +17,7 @@ class GithubService
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n[piconname:#{action_owner.chatwork_id}] " +
-        "has (commented) on your pull request.\n" + @request["html_url"]
+        "(commented)\n" + @request["html_url"]
     # Handle when close, open or merge pull request
     when "pull_request"
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
@@ -45,7 +45,7 @@ class GithubService
         if @pull_request.merged
           @pull_request.update merged_by: sender
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n[piconname:#{sender.chatwork_id}] has " +
-            "(merged) your pull request.\n" + @params["repository"]["html_url"]
+            "(merged)\n" + @pull_request.url
         else
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
           "[piconname:#{sender.chatwork_id}] has closed your pull request.\n" + @pull_request.url
