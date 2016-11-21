@@ -20,7 +20,7 @@ class DeployhooksController < ApplicationController
     if not_deployed_pull.present?
       not_deployed_pull.update deployed: true
       body = "#{to_part}[info][title]#{not_deployed_pull.title}[/title]" +
-        "#{not_deployed_pull.description}[/info]"
+        "#{not_deployed_pull.description || "Nothing to say."}[/info]"
 
       http_request = HTTP.headers("X-ChatWorkToken" => ENV["chatwork_secret"])
         .post("https://api.chatwork.com/v1/rooms/#{room.chatwork_id}/messages", params: {body: body})
