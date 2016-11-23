@@ -6,7 +6,7 @@ class DeployhooksController < ApplicationController
     to_part = to_part.join + "\n"
 
     # not_deployed_pulls = PullRequest.not_deployed
-    not_deployed_pull = PullRequest.not_deployed.first
+    not_deployed_pull = PullRequest.not_deployed.last
 
     # message = ""
     # not_deployed_pulls.each_with_index do |pull, index|
