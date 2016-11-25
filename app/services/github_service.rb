@@ -4,6 +4,7 @@ class GithubService
     @params = params
 
     @request = params["review"]
+    @real_action = ""
   end
 
   def get_message_to_send
@@ -14,6 +15,8 @@ class GithubService
 
     # Handle when review in a pull request
     when "pull_request_review"
+      @real_action = "comment"
+      @pull_request = PullRequest.find_or_create_by(url: @request["html_url"])
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n[piconname:#{action_owner.chatwork_id}] " +
@@ -34,6 +37,7 @@ class GithubService
         title: @params["pull_request"]["title"], description: @params["pull_request"]["body"]
 
       if @pull_request.state == "open"
+        @real_action = "open"
         to_part = reviewers.map do |reviewer|
           reviewer.id == pull_owner.id ? "" : "[To:#{reviewer.chatwork_id}]"
         end
@@ -43,10 +47,12 @@ class GithubService
           @params["pull_request"]["title"] + "\n" + @pull_request.url
       elsif @pull_request.state == "closed"
         if @pull_request.merged
+          @real_action = "merge"
           @pull_request.update merged_by: sender
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n[piconname:#{sender.chatwork_id}] has " +
             "(merged)\n" + @pull_request.url
         else
+          @real_action = "close"
           body = "[To:#{pull_owner.chatwork_id}]#{pull_owner.name}\n" +
           "[piconname:#{sender.chatwork_id}] has closed your pull request.\n" + @pull_request.url
         end
@@ -66,12 +72,13 @@ class GithubService
         to_part = mergers.map {|merger| "[To:#{merger.chatwork_id}]"}
         to_part = to_part.join + "\n"
 
+        @real_action = "need_review"
         body = to_part + "All reviewers are happy, please review it.\n" +
           @pull_request.url
       end
     end
 
-    [body, @room]
+    [body, @room, @pull_request, @real_action]
   end
 
   def get_room

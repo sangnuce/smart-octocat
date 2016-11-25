@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117055814) do
+ActiveRecord::Schema.define(version: 20161125094542) do
+
+  create_table "pull_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "pull_request_id"
+    t.integer "chatwork_message_id"
+    t.integer "action"
+    t.index ["pull_request_id"], name: "index_pull_notifications_on_pull_request_id", using: :btree
+  end
 
   create_table "pull_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "url"
@@ -54,6 +61,7 @@ ActiveRecord::Schema.define(version: 20161117055814) do
     t.datetime "updated_at",  null: false
   end
 
+  add_foreign_key "pull_notifications", "pull_requests"
   add_foreign_key "pull_requests", "user_rooms"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"
