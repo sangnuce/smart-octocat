@@ -9,6 +9,7 @@ class GithubService
 
   def get_message_to_send
     @room = Room.find_by project_github_link: @params["repository"]["html_url"]
+    action_owner = nil
 
     body = ""
     case @action
@@ -16,11 +17,12 @@ class GithubService
     # Handle when review in a pull request
     when "pull_request_review"
       @real_action = "comment"
-      @pull_request = PullRequest.find_or_create_by(url: @request["html_url"])
+      @pull_request = PullRequest.find_or_create_by(url: @params["pull_request"]["html_url"])
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
       action_owner = get_user_by_github_id @request["user"]["login"]
       body = "[To:#{pull_owner.chatwork_id}] #{pull_owner.name}\n[piconname:#{action_owner.chatwork_id}] " +
         "(commented)\n" + @request["html_url"]
+
     # Handle when close, open or merge pull request
     when "pull_request"
       pull_owner = get_user_by_github_id @params["pull_request"]["user"]["login"]
@@ -38,13 +40,27 @@ class GithubService
 
       if @pull_request.state == "open"
         @real_action = "open"
-        to_part = reviewers.map do |reviewer|
-          reviewer.id == pull_owner.id ? "" : "[To:#{reviewer.chatwork_id}]"
-        end
-        to_part = to_part.join + "\n"
 
-        body = to_part + "[piconname:#{pull_owner.chatwork_id}] has a pull request, please review it.\n" +
-          @params["pull_request"]["title"] + "\n" + @pull_request.url
+        # Handle to reviewer when fixeddd
+        notis = @pull_request.pull_notifications.where(action: "comment").not_replied
+        if notis.length == 0
+          to_part = reviewers.map do |reviewer|
+            reviewer.id == pull_owner.id ? "" : "[To:#{reviewer.chatwork_id}]"
+          end
+          to_part = to_part.join + "\n"
+
+          body = to_part + "[piconname:#{pull_owner.chatwork_id}] has a pull request, please review it.\n" +
+            @params["pull_request"]["title"] + "\n" + @pull_request.url
+        else
+          to_part = notis.map do |noti|
+            noti.update replied: true
+            noti.action_owner ? "[To:#{noti.action_owner.chatwork_id}]" : nil
+          end
+          to_part = to_part.join + "\n"
+
+          body = to_part + "[piconname:#{pull_owner.chatwork_id}] (fixed), please review it.\n" +
+            @params["pull_request"]["title"] + "\n" + @pull_request.url
+        end
       elsif @pull_request.state == "closed"
         if @pull_request.merged
           @real_action = "merge"
@@ -78,7 +94,7 @@ class GithubService
       end
     end
 
-    [body, @room, @pull_request, @real_action]
+    [body, @room, @pull_request, @real_action, action_owner]
   end
 
   def get_room
