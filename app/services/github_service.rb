@@ -73,7 +73,8 @@ class GithubService
           "[piconname:#{sender.chatwork_id}] has closed your pull request.\n" + @pull_request.url
         end
       end
-    # Handle when user comment on outer pull request
+
+    # Handle when user comment on outer pull requestttt
     when "issue_comment"
       @pull_request = PullRequest.find_by url: @params["issue"]["html_url"]
       current_ok = @pull_request.happy_reviewer_num || 0
