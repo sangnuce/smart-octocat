@@ -12,7 +12,7 @@ class DeployhooksController < ApplicationController
       not_deployed_pulls.each do |pull|
         pull.update deployed: true
         body += "[info][title]#{pull.title}[/title]" +
-          "#{pull.description.presence || "Nothing to say."}[/info]"
+          "#{pull.description.presence || "Give me 1X pls."}[/info]"
       end
       http_request = HTTP.headers("X-ChatWorkToken" => ENV["chatwork_secret"])
         .post("https://api.chatwork.com/v1/rooms/#{room.chatwork_id}/messages", params: {body: body})
