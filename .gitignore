@@ -16,3 +16,5 @@
 !/log/.keep
 /tmp
 .byebug_history
+node_modules
+app/assets/javascripts/react-app.js
