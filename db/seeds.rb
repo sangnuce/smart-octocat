@@ -25,7 +25,11 @@ UserRoom.create! user: chi_hang, room: faq, role: 2
 
 # Project Assurance
 ha_tam = User.create! name: "Ha Thanh Tam", github_id: "hathanhtamnd", chatwork_id: "2095016"
+tran_tuan = User.create! name: "Tran Van Tuan B", github_id: "tranvantuanb", chatwork_id: "2095012"
+nguyen_truong = User.create! name: "Nguyen Van Truong", github_id: "truongnv0211", chatwork_id: "1385456"
 assurance = Room.create! name: "Assurance", chatwork_id: "60551987",
   project_github_link: "https://github.com/framgia/Assurance"
 UserRoom.create! user: hieu, room: assurance, role: 1
 UserRoom.create! user: ha_tam, room: assurance, role: 0
+UserRoom.create! user: tran_tuan, room: assurance, role: 0
+UserRoom.create! user: nguyen_truong, room: assurance, role: 0
