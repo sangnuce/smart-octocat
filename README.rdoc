@@ -6,3 +6,25 @@ steps:
 - Send message chatwork to people we want.
 
 Link production: https://smart-octocat.herokuapp.com
+
+### Config auto start Docker when server restart
+This configuration is not included in Docker, it's configured in server where contain Docker
+- First create a file script that start Docker and start some services
+```bash
+#!/bin/bash
+# Start testing server
+docker start testing
+docker exec testing start_server
+docker exec testing /bin/bash -l -c 'cd /var/www/html/app/current; bundle exec pumactl -S /var/www/html/app/shared/tmp/pids/puma.state stop'
+docker exec testing /bin/bash -lc 'cd /var/www/html/app/current; bundle exec puma -C /var/www/html/app/shared/puma.rb --daemon'
+
+# Start staging server
+docker start staging
+docker exec staging start_server
+docker exec staging /bin/bash -l -c 'cd /var/www/html/app/current; bundle exec pumactl -S /var/www/html/app/shared/tmp/pids/puma.state stop'
+docker exec staging /bin/bash -lc 'cd /var/www/html/app/current; bundle exec puma -C /var/www/html/app/shared/puma.rb --daemon'
+```
+- Next add script file to crontab
+```bash
+@reboot /var/www/html/app/reopen_stop_server.sh
+```
