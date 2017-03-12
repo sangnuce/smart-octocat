@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+ruby "2.3.1"
 gem "http"
 gem "rails", "5.0"
 gem "mysql2"
@@ -11,6 +12,7 @@ gem "jquery-rails"
 gem "turbolinks"
 gem "jbuilder"
 gem "sdoc", "~> 0.4.0", group: :doc
+gem "faker"
 
 group :production do
   gem "pg"

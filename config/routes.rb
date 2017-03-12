@@ -3,4 +3,8 @@ Rails.application.routes.draw do
 
   post "webhooks" => "webhooks#index"
   post "deployhooks" => "deployhooks#index"
+
+  namespace :api do
+  	resources :rooms
+  end
 end
