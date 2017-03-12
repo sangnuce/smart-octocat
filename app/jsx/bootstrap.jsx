@@ -5,6 +5,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();
 
 import App from "./app";
+global.API = require("./CallAPI");
 
 const router = (
   <Router history={browserHistory}>
