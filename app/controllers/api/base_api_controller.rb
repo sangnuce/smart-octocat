@@ -1,5 +1,5 @@
 class Api::BaseApiController < ActionController::API
-	def response_success data = nil
+  def response_success data = nil
     render json: {
       data: data,
       status: true,
