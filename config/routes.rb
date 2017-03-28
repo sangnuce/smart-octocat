@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "welcomes#index"
+  root "react_app#home"
 
   post "webhooks" => "webhooks#index"
   post "deployhooks" => "deployhooks#index"
@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   namespace :api do
   	resources :rooms
   end
+  get "*path", to: "react_app#home"
 end

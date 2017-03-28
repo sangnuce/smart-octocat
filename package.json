@@ -14,5 +14,9 @@
     "react-tap-event-plugin": "^2.0.0",
     "react-toastr": "^2.8.0",
     "webpack": "~1.14.0"
+  },
+  "scripts": {
+    "webpack:deploy": "webpack -p",
+    "heroku-postbuild": "npm run webpack:deploy"
   }
 }
