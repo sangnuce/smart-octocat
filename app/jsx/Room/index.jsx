@@ -7,16 +7,16 @@ export default class Room extends React.Component {
 		}
 	}
 	componentDidMount() {
-		API.Room.getList(this.handleGetListRoom.bind(this));
+		API.Room.getList(this.handleGetListRoom);
 	}
 
-	handleGetListRoom(status, data) {
-		if (status) {
-			this.setState({
-				rooms: data.rooms,
-			});
-		}
-	}
+  handleGetListRoom = (status, data) => {
+    if (status) {
+      this.setState({
+        rooms: data.rooms,
+      });
+    }
+  }
 
 	render() {
 		let rooms = this.state.rooms;
