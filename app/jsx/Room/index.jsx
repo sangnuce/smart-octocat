@@ -18,8 +18,14 @@ export default class Room extends React.Component {
     }
   }
 
+  handleClickRoom = (room_id) => {
+    console.log(room_id);
+    Helper.transitionTo(`/rooms/${room_id}`);
+  }
+
 	render() {
 		let rooms = this.state.rooms;
+    console.log("adddbc");
 		return (
 			<mui.Table>
         <mui.TableHeader>
@@ -32,7 +38,7 @@ export default class Room extends React.Component {
         </mui.TableHeader>
         <mui.TableBody>
           {rooms.map((room, index) => (
-            <mui.TableRow key={index}>
+            <mui.TableRow key={index} className="pointer" onTouchTap={(event, p) => this.handleClickRoom(room.id)}>
               <mui.TableRowColumn>{room.id}</mui.TableRowColumn>
               <mui.TableRowColumn>{room.chatwork_id}</mui.TableRowColumn>
               <mui.TableRowColumn>{room.name}</mui.TableRowColumn>

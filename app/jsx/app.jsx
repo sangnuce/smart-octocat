@@ -7,6 +7,17 @@ export default class App extends React.Component {
 		super(props);
 	}
 
+  componentDidMount() {
+    // API.Authentication.getList(this.handleGetAuthenticationCallback);
+
+    // Don't know whether it's react-router bug,
+    // when you back to the first loaded route, you will get blank page.
+    // This below line will do a trick, replace a POST (full page load) of the first time,
+    // by a REPLACE. And it works like a charm.
+    Helper.history.replace({
+      pathname: Helper.getCurrentPath()});
+  }
+
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>

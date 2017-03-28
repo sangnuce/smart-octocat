@@ -7,4 +7,11 @@ export default class Room extends BaseAPI {
 			data: options,
 		});
 	}
+
+	static get(callback, id, options = {}) {
+    this.sendAjax(callback, {
+      url: `rooms/${id}`,
+      data: options,
+    });
+  }
 }
