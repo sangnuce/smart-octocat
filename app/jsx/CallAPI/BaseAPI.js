@@ -1,34 +1,34 @@
 export default class BaseAPI {
-	static sendAjax(callback, options) {
-		BaseAPI.requestNumber = BaseAPI.requestNumber || 0;
-		BaseAPI.requestNumber++;
+  static sendAjax(callback, options) {
+    BaseAPI.requestNumber = BaseAPI.requestNumber || 0;
+    BaseAPI.requestNumber++;
 
-		options.success = (response) => {
-			// if (response.error) {
-			// 	if (!response.data) {
-			// 		Helper.showMessage("Error connection");
-			// 	}
-			// }
-			if (callback) {
-				callback(response.status, response.data);
-			}
-		}
+    options.success = (response) => {
+      // if (response.error) {
+      //  if (!response.data) {
+      //    Helper.showMessage("Error connection");
+      //  }
+      // }
+      if (callback) {
+        callback(response.status, response.data);
+      }
+    }
 
-		options.error = (xhr) => {
-			if (xhr.status == 422 || xhr.status == 401) {
-				return false;
-			}
+    options.error = (xhr) => {
+      if (xhr.status == 422 || xhr.status == 401) {
+        return false;
+      }
 
-			if (callback) {
-				callback(false);
-			}
-		}
+      if (callback) {
+        callback(false);
+      }
+    }
 
-		options.complete = () => {
-			BaseAPI.requestNumber--;
-		}
+    options.complete = () => {
+      BaseAPI.requestNumber--;
+    }
 
-		options.url = "/api/" + options.url;
-		$.ajax(options);
-	}
+    options.url = "/api/" + options.url;
+    $.ajax(options);
+  }
 }
