@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+# Ruby version
 ruby "2.3.1"
 gem "http"
 gem "rails", "5.0"
