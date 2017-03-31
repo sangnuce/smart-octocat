@@ -7,12 +7,15 @@ gem "mysql2"
 gem "sass-rails"
 gem "uglifier"
 gem "coffee-rails"
+gem "bootstrap-sass"
+gem "autoprefixer-rails"
 
 gem "jquery-rails"
 gem "turbolinks"
 gem "jbuilder"
 gem "sdoc", "~> 0.4.0", group: :doc
 gem "faker"
+gem "devise"
 
 group :production do
   gem "pg"
