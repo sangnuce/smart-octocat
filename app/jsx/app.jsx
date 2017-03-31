@@ -1,6 +1,7 @@
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Room from "./Room";
+import AppBar from "./App/AppBar";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class App extends React.Component {
         {/*<mui.Drawer open={false}>
           <mui.MenuItem>Room List</mui.MenuItem>
         </mui.Drawer>*/}
+          <AppBar />
           {this.props.children}
         </div>
       </MuiThemeProvider>

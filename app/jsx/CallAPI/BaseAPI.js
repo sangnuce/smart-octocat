@@ -16,6 +16,7 @@ export default class BaseAPI {
 
     options.error = (xhr) => {
       if (xhr.status == 422 || xhr.status == 401) {
+        BaseAPI.handleRequestLogin();
         return false;
       }
 
@@ -30,5 +31,9 @@ export default class BaseAPI {
 
     options.url = "/api/" + options.url;
     $.ajax(options);
+  }
+
+  static handleRequestLogin() {
+    window.location.href = "/users/sign_in";
   }
 }
