@@ -20,6 +20,11 @@ UserRoom.create! user: binh, room: test_octocat, role: 0
 UserRoom.create! user: son, room: test_octocat, role: 0
 
 # Project FAQ
+anh_vu = User.create! name: "Le Dinh Vu", github_id: "octoberstorm", chatwork_id: "637888",
+  email: Faker::Internet.email, password: "123123"
+norin = User.create! name: "Hor Norin", github_id: "PrinceNorin", chatwork_id: "1352079",
+  email: Faker::Internet.email, password: "123123"
+
 faq = Room.create! name: "FAQ", chatwork_id: "47423136", project_github_link:
 	"https://github.com/framgia/FAQ"
 UserRoom.create! user: ngoc, room: faq, role: 0
@@ -28,6 +33,8 @@ UserRoom.create! user: binh, room: faq, role: 0
 UserRoom.create! user: son, room: faq, role: 0
 UserRoom.create! user: mr_thanh, room: faq, role: 4
 UserRoom.create! user: chi_hang, room: faq, role: 2
+UserRoom.create! user: anh_vu, room: faq, role: 0
+UserRoom.create! user: norin, room: faq, role: 0
 
 # Project Assurance
 ha_tam = User.create! name: "Ha Thanh Tam", github_id: "hathanhtamnd", chatwork_id: "2095016",
