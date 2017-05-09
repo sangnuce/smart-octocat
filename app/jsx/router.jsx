@@ -4,7 +4,6 @@ import Room from "./Room";
 import RoomDetail from "./Room/RoomDetail";
 import Login from "./Login";
 
-console.log("abc");
 const router = (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
