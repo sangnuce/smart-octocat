@@ -29,9 +29,12 @@ class GithubService
       sender = get_user_by_github_id @params["sender"]["login"]
 
       @pull_request = PullRequest.find_or_create_by(url: @params["pull_request"]["html_url"])
+      requested_reviewers = @params["pull_request"]["requested_reviewers"]
 
-      reviewers = User.joins(:user_rooms).where "room_id = ? AND user_rooms.role = ?",
-        @room.id, 0
+      # If pull owner didn't set reviewer, we TO all developers to review
+      reviewers = requested_reviewers.empty? ? User.joins(:user_rooms).where("room_id = ? AND user_rooms.role = ?",
+        @room.id, 0) : User.where("github_id IN (?)", requested_reviewers.map{|re| re["login"]})
+
       user_room = UserRoom.find_by user: pull_owner, room: @room
       @pull_request.update merged: @params["pull_request"]["merged"],
         state: @params["pull_request"]["state"], user_room: user_room,
