@@ -15,7 +15,7 @@ class DeployhooksController < ApplicationController
           "#{pull.description.presence || "Give me 1X pls."}[/info]"
       end
       http_request = HTTP.headers("X-ChatWorkToken" => ENV["chatwork_secret"])
-        .post("https://api.chatwork.com/v1/rooms/#{room.chatwork_id}/messages", params: {body: body})
+        .post("https://api.chatwork.com/v2/rooms/#{room.chatwork_id}/messages", params: {body: body})
       puts http_request.to_s
     end
 
