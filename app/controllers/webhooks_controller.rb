@@ -13,7 +13,7 @@ class WebhooksController < ApplicationController
     body_message, room, pull_request, real_action, action_owner = github_service.get_message_to_send
 
     http_request = HTTP.headers("X-ChatWorkToken" => ENV["chatwork_secret"])
-      .post("https://api.chatwork.com/v1/rooms/#{room.chatwork_id}/messages", params: {body: body_message})
+      .post("https://api.chatwork.com/v2/rooms/#{room.chatwork_id}/messages", params: {body: body_message})
     puts http_request.to_s
 
     message_id = JSON.parse(http_request.body.to_s)["message_id"]

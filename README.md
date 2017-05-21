@@ -1,4 +1,5 @@
-## Smart Octocat
+# Smart Octocat
+![Travis build](https://travis-ci.org/NeverSmileK57CLC/smart-octocat.svg?branch=master)
 
 Purpose of this project is to make work more effective in my project. It has 2
 steps:
